@@ -1,0 +1,15 @@
+pymupdf
+langchain
+langchain-core
+langchain-openai
+openai
+langchain-anthropic
+python-dotenv
+numpy
+streamlit
+pydantic
+pydantic[email]
+grandalf
+langchain-community
+langchain-experimental
+sentence-transformers
