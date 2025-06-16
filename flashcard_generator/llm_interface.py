@@ -44,37 +44,7 @@ def parse_flashcards(raw_output: str) -> List[Dict[str, str]]:
     except Exception as e:
         print(f"Unexpected error: {e}")
         return []
-# def parse_flashcards(raw_output:str) -> List[Dict[str,str]]:
-#     lines = raw_output.strip().split("\n")
-#     flashcards = []
-#     question = answer = difficulty = ""
 
-#     for line in lines:
-#         if not line or ":" not in line:
-#             continue
-#         line = line.strip()
-#         if line.lower().startswith('q'):
-#             if question and answer:
-#                 flashcards.append({
-#                     "question":question,
-#                     "answer":answer,
-#                     "difficulty":difficulty
-#                 })
-#                 answer = difficulty = ""
-#             question = line.split(":",1)[1].strip()
-#         elif line.lower().startswith("a"):
-#             answer = line.split(":",1)[1].strip()
-#         elif "difficulty" in line.lower():
-#             difficulty = line.split(":",1)[1].strip()
-
-#     if question and answer:
-#         flashcards.append({
-#             "question":question,
-#             "answer":answer,
-#             "difficulty":difficulty
-#         })
-
-#     return flashcards
 
 
 
