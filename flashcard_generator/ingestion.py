@@ -2,6 +2,7 @@ import os
 from typing import Union
 from pathlib import Path
 from langchain_community.document_loaders import PyMuPDFLoader, TextLoader
+import tempfile
 
 def read_txt(file_path : Union[str,Path]) -> str:
     if hasattr(file_path, "read"):  # Streamlit file uploader gives a file-like object
@@ -15,9 +16,11 @@ def read_pdf(file_path : Union[str,Path]) -> str:
     # If it's a file-like object (Streamlit), read bytes
     if hasattr(file_path, "read"):
         pdf_bytes = file_path.read()
-        tmp_path = "/tmp/temp_file.pdf"
-        with open(tmp_path,"wb") as f:
-            f.write(pdf_bytes)
+        
+        with tempfile.NamedTemporaryFile(delete=False,suffix=".pdf") as tmp:
+            tmp.write(pdf_bytes)
+            tmp_path = tmp.name
+
         loader = PyMuPDFLoader(tmp_path)
     else:
         loader = PyMuPDFLoader(str(file_path))
