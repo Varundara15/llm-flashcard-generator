@@ -1,28 +1,30 @@
 import os
 from typing import Union
 from pathlib import Path
-import fitz
+from langchain_community.document_loaders import PyMuPDFLoader, TextLoader
 
 def read_txt(file_path : Union[str,Path]) -> str:
     if hasattr(file_path, "read"):  # Streamlit file uploader gives a file-like object
         return file_path.read().decode("utf-8")
     else:  # If it's a file path
-        with open(file_path, "r", encoding="utf-8") as f:
-            return f.read()
+        loader = TextLoader(str(file_path),encoding = "utf-8")
+        documents = loader.load()
+        return "\n".join(doc.page_content for doc in documents)
     
 def read_pdf(file_path : Union[str,Path]) -> str:
     # If it's a file-like object (Streamlit), read bytes
     if hasattr(file_path, "read"):
         pdf_bytes = file_path.read()
-        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+        tmp_path = "/tmp/temp_file.pdf"
+        with open(tmp_path,"wb") as f:
+            f.write(pdf_bytes)
+        loader = PyMuPDFLoader(tmp_path)
     else:
-        # It's a file path
-        doc = fitz.open(file_path)
+        loader = PyMuPDFLoader(str(file_path))
+    
+    documents = loader.load()
+    return "\n".join(doc.page_content for doc in documents)
 
-    text = ""
-    for page in doc:
-        text += page.get_text()
-    return text
     
 def ingest_input(file = None,raw_text :str = "") -> str:
     if file:
