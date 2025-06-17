@@ -22,10 +22,11 @@ def read_pdf(file_path : Union[str,Path]) -> str:
             tmp_path = tmp.name
 
         loader = PyMuPDFLoader(tmp_path)
+        documents = loader.load()
+        os.remove(tmp_path)
     else:
         loader = PyMuPDFLoader(str(file_path))
-    
-    documents = loader.load()
+        documents = loader.load()
     return "\n".join(doc.page_content for doc in documents)
 
     
